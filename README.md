@@ -4,7 +4,7 @@ Este proyecto incluye un programa C para un cargador solar direccional automáti
 # Requisitos
 - **Su Sistema Operativo debe ser compatible con herramientas de desarrollo en C:** 
 
-`Windows, Mac, Linux.`
+  `Windows, Mac, Linux.`
 - **Un IDE (Entorno de Desarrollo Integrado) que Permita la Visualización del Código.** 
 
   `Visual Studio Code` con las respectivas extensiones para el lenguaje C.
