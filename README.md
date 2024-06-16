@@ -3,6 +3,7 @@
 Este proyecto incluye un programa C para un cargador solar direccional automático. El objetivo es maximizar la eficiencia de carga orientando los paneles solares para que estén siempre alineados con el sol. El sistema utiliza coordenadas geográficas para determinar la posición del sol en el cielo y ajusta el ángulo del panel solar en consecuencia.
 # Requisitos
 - **Su Sistema Operativo debe ser compatible con herramientas de desarrollo en C:** 
+
 `Windows, Mac, Linux.`
 - **Un IDE (Entorno de Desarrollo Integrado) que Permita la Visualización del Código.** 
 
