@@ -9,11 +9,11 @@ Este proyecto incluye un programa C para un cargador solar direccional automáti
   `Visual Studio Code` con las respectivas extensiones para el lenguaje C.
 - **Un Compilador Para C :**
    
-  `Compilador GCC`.
+  Recomendamos el `Compilador GCC`.
 
 - **Un Programa Para Administrar Repositorios GIT**
 
-    `git`
+  Recomendamos el programa    `git`
 
 # Instrucciones de Instalación
 **1. Descarga e Instala git Desde su Página Oficial:**
@@ -24,7 +24,7 @@ Este proyecto incluye un programa C para un cargador solar direccional automáti
     
 Abre una terminal `git bash` dando click derecho dentro del directorio donde desee clonar el repositorio y ejecute el siguiente comando:
     
-        git clone "link del repositorio q aun no existe xd"
+        git clone https://github.com/Michu117/PIS_Grupo7_Evaluaci-n2.git
 
 
 
