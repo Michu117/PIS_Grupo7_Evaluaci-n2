@@ -32,4 +32,5 @@ Abre una terminal `git bash` dando click derecho dentro del directorio donde des
 # Uso
 - **Ejecución del Código**
 
-Compilar y ejecutar el código con su
+Compile el código con `GCC` para para poder ejecutarlo.
+
