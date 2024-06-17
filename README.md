@@ -47,8 +47,8 @@ Proceso de compilación para el código con `GCC` para para poder ejecutarlo.
 
 
 # Autores:
-- Fabricio Josue Ruiz Aguilar. "Michu117"
-- Cristhian Alexander Dávila Sari. "Cristhian1938"
-- Ariana Alejandra Córdova Betancourt.
-- Yorely Camila Romero Cuenca.
-- Juan Diego Encalada Celi.
+- Fabricio Josue Ruiz Aguilar. `"Michu117"`
+- Cristhian Alexander Dávila Sari. `"Cristhian1938"`
+- Ariana Alejandra Córdova Betancourt. `"ArisCorBet"`
+- Yorely Camila Romero Cuenca. `"camila-06R"`
+- Juan Diego Encalada Celi. `"Diego-Encalada"`
