@@ -21,9 +21,8 @@ Este proyecto incluye un programa C para un cargador solar direccional automáti
 - Descarga git para tu sistema operativo desde el siguiente link: [https://www.git-scm.com/](https://www.git-scm.com/)
 - Instala git siguiendo los pasos del instalador. 
 
-**2. Clonar el Repositorio:** 
-    
-Abre una terminal `git bash` dando click derecho dentro del directorio donde desee clonar el repositorio y ejecute el siguiente comando:
+**2. Clonar el Repositorio:**   
+- Abre una terminal `git bash` dando click derecho dentro del directorio donde desee clonar el repositorio y ejecute el siguiente comando:
     
         git clone https://github.com/Michu117/PIS_Grupo7_Evaluaci-n2.git
 
@@ -32,5 +31,16 @@ Abre una terminal `git bash` dando click derecho dentro del directorio donde des
 # Uso
 - **Ejecución del Código**
 
-Compile el código con `GCC` para para poder ejecutarlo.
+Proceso de compilación para el código con `GCC` para para poder ejecutarlo.
+- En `Visual Studio Code` abra el archivo de código `codigoC_azimut.c` y una nueva Terminal para ejecutar comandos.
+- Navegue hacia el directorio donde se encuentra el archivo de código utilizando el comando `cd` Por ejemplo:
 
+        cd Documents/PIS_Grupo7_Evaluaci-n2
+
+- Una vez en el directorio, compile el código utilizando el siguiente comando:
+
+        gcc codigoC_azimut.c -o codigoC_azimut
+
+- Ejecute el código con el siguiente comando en la Terminal:
+
+        ./codigoC_azimut
