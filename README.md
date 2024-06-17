@@ -10,9 +10,9 @@ Este proyecto incluye un programa C para un cargador solar direccional automáti
   `Visual Studio Code` con las respectivas extensiones para el lenguaje C.
 - **Un Compilador Para C :**
    
-  Utilizaremos el `Compilador GCC`.
+  Utilizaremos el Compilador `GCC`.
 
-- **Un Programa Para Administrar Repositorios GIT**
+- **Un Programa Para Administrar Repositorios git**
 
   Utilizaremos el programa `git`
 
