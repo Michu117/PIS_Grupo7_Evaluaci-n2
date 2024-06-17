@@ -44,3 +44,11 @@ Proceso de compilación para el código con `GCC` para para poder ejecutarlo.
 - Ejecute el código con el siguiente comando en la Terminal:
 
         ./codigoC_azimut
+
+
+# Autores:
+- Fabricio Josue Ruiz Aguilar. "Michu117"
+- Cristhian Alexander Dávila Sari.
+- Ariana Alejandra Córdova Betancourt.
+- Yorely Camila Romero Cuenca.
+- Juan Diego Encalada Celi.
