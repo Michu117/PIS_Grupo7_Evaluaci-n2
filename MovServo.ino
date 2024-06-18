@@ -1,6 +1,6 @@
 #include <Servo.h>
 
-// Definimos los pines para los dos servomotores y las dos fotorresistencias
+// Definición de los pines para los dos servomotores y las dos fotorresistencias
 const int servoPin1 = 9;   // Pin para el servo de orientación
 const int servoPin2 = 10;  // Pin para el servo de inclinación
 const int ldrPin1 = A0;    // Pin para la fotorresistencia horizontal
