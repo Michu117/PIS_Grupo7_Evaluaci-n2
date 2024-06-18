@@ -174,22 +174,57 @@ void actualizarOrientacionPanel(struct Coordenadas coordenadas) {
     printf("  Azimut Solar: %.2f grados\n", Azimut_grados);
 }
 
+// Función para verificar si la entrada es un número
+int esNumero(char *entrada) {
+    // Verificar cada caracter de la cadena
+    while (*entrada) {
+        if (!isdigit(*entrada) && *entrada != '.' && *entrada != '-') {
+            return 0;  // No es un número válido
+        }
+        entrada++;
+    }
+    return 1;  // Es un número válido
+}
+
 int main() {
     struct Coordenadas coordenadas;
-    // Solicitar al usuario que ingrese la longitud y latitud del lugar
-    printf("Ingrese la longitud del lugar (ejemplo: -79.20422): ");
-    scanf("%lf", &coordenadas.longitud);
 
-    printf("Ingrese la latitud del lugar (ejemplo: -3.99313): ");
-    scanf("%lf", &coordenadas.latitud);
+    // Variables temporales para almacenar la entrada del usuario
+    char buffer[100];
+    // Solicitar al usuario que ingrese la longitud del lugar
+    while (1) {
+        printf("Ingrese la longitud del lugar (ejemplo: -79.20422): ");
+        scanf("%s", buffer);
+
+        // Verificar si la entrada es un número válido
+        if (esNumero(buffer)) {
+            sscanf(buffer, "%lf", &coordenadas.longitud);
+            break;  // Salir del bucle si es un número válido
+        } else {
+            printf("Error: Ingrese un valor numérico válido.\n");
+        }
+    }
+
+    // Solicitar al usuario que ingrese la latitud del lugar
+    while (1) {
+        printf("Ingrese la latitud del lugar (ejemplo: -3.99313): ");
+        scanf("%s", buffer);
+
+        // Verificar si la entrada es un número válido
+        if (esNumero(buffer)) {
+            sscanf(buffer, "%lf", &coordenadas.latitud);
+            break;  // Salir del bucle si es un número válido
+        } else {
+            printf("Error: Ingrese un valor numérico válido.\n");
+        }
+    }
 
     // Bucle para actualizar la orientación del panel solar continuamente
     while (1) { 
         actualizarOrientacionPanel(coordenadas);
-        // Esperar un minuto antes de la siguiente actualización
+        // Esperar un minuto antes de la siguiente actualización (simulado con sleep)
         Sleep(60000);
     }
-
 
     return 0;
 }
