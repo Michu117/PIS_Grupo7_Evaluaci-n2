@@ -1,8 +1,11 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <time.h>
 #include <math.h>
+#ifdef _WIN32
 #include <windows.h>
-
+#include <unistd.h>
+#endif
 
 #define PI 3.14159265
 
@@ -135,7 +138,7 @@ double calcularAzimutSolar(double declinacionSolarRad, double AIS_rad, double La
 }
 
 // Función para actualizar y mostrar la orientación del panel solar
-void actualizarOrientacionPanel(struct Coordenadas coordenadas) {
+void actualizarOrientacionPanel(struct Coordenadas coordenadas, HANDLE hSerial) {
     int diasTranscurridos;
     double declinacion, ecuacionTiempo, tiempoSolarVerdadero, AHR, AIS_grados, Azimut_grados, declinacionSolarRad, LatitudPuntoRad;
 
@@ -172,6 +175,12 @@ void actualizarOrientacionPanel(struct Coordenadas coordenadas) {
     printf("Orientación del panel solar:\n");
     printf("  Ángulo de Inclinación Solar: %.2f grados\n", AIS_grados);
     printf("  Azimut Solar: %.2f grados\n", Azimut_grados);
+
+    // Enviar los ángulos a Arduino
+    char buffer[50];
+    snprintf(buffer, sizeof(buffer), "%.2f %.2f\n", AIS_grados, Azimut_grados);
+    DWORD bytesWritten;
+    WriteFile(hSerial, buffer, strlen(buffer), &bytesWritten, NULL);
 }
 
 // Función para verificar si la entrada es un número
@@ -183,48 +192,126 @@ int esNumero(char *entrada) {
         }
         entrada++;
     }
-    return 1;  // Es un número válido
+    return 1; // Es un número válido
 }
 
-int main() {
+// Función para obtener las coordenadas de entrada del usuario
+struct Coordenadas obtenerCoordenadas() {
     struct Coordenadas coordenadas;
+    char entradaLat[20], entradaLon[20];
+    
+    // Solicitar la latitud al usuario
+    printf("Introduce la latitud del punto: ");
+    fgets(entradaLat, sizeof(entradaLat), stdin);
+    entradaLat[strcspn(entradaLat, "\n")] = '\0'; // Eliminar el salto de línea
+    
+    // Validar la entrada de la latitud
+    while (!esNumero(entradaLat)) {
+        printf("Entrada no válida. Introduce un número para la latitud: ");
+        fgets(entradaLat, sizeof(entradaLat), stdin);
+        entradaLat[strcspn(entradaLat, "\n")] = '\0'; // Eliminar el salto de línea
+    }
+    
+    // Solicitar la longitud al usuario
+    printf("Introduce la longitud del punto: ");
+    fgets(entradaLon, sizeof(entradaLon), stdin);
+    entradaLon[strcspn(entradaLon, "\n")] = '\0'; // Eliminar el salto de línea
+    
+    // Validar la entrada de la longitud
+    while (!esNumero(entradaLon)) {
+        printf("Entrada no válida. Introduce un número para la longitud: ");
+        fgets(entradaLon, sizeof(entradaLon), stdin);
+        entradaLon[strcspn(entradaLon, "\n")] = '\0'; // Eliminar el salto de línea
+    }
+    
+    // Convertir las entradas a double y asignarlas a la estructura Coordenadas
+    coordenadas.latitud = atof(entradaLat);
+    coordenadas.longitud = atof(entradaLon);
+    
+    return coordenadas;
+}
 
-    // Variables temporales para almacenar la entrada del usuario
-    char buffer[100];
-    // Solicitar al usuario que ingrese la longitud del lugar
+// Función principal
+int main() {
+    #ifdef _WIN32
+    HANDLE hSerial;
+    DCB dcbSerialParams = {0};
+    COMMTIMEOUTS timeouts = {0};
+
+    // Abre el puerto serie
+    hSerial = CreateFile(
+        "\\\\.\\COM3", GENERIC_READ | GENERIC_WRITE, 0, NULL,
+        OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL
+    );
+
+    // Verificar si se abrió correctamente el puerto serie
+    if (hSerial == INVALID_HANDLE_VALUE) {
+        fprintf(stderr, "Error al abrir el puerto serie\n");
+        return 1;
+    }
+
+    // Configura los parámetros del puerto serie
+    dcbSerialParams.DCBlength = sizeof(dcbSerialParams);
+
+    // Obtener el estado actual del puerto serie
+    if (!GetCommState(hSerial, &dcbSerialParams)) {
+        fprintf(stderr, "Error al obtener el estado del puerto serie\n");
+        return 1;
+    }
+
+    // Establecer los parámetros del puerto serie
+    dcbSerialParams.BaudRate = CBR_9600;
+    dcbSerialParams.ByteSize = 8;
+    dcbSerialParams.StopBits = ONESTOPBIT;
+    dcbSerialParams.Parity = NOPARITY;
+
+    // Aplicar la configuración al puerto serie
+    if (!SetCommState(hSerial, &dcbSerialParams)) {
+        fprintf(stderr, "Error al configurar el puerto serie\n");
+        return 1;
+    }
+
+    // Configura los tiempos de espera del puerto serie
+    timeouts.ReadIntervalTimeout = 50;
+    timeouts.ReadTotalTimeoutConstant = 50;
+    timeouts.ReadTotalTimeoutMultiplier = 10;
+    timeouts.WriteTotalTimeoutConstant = 50;
+    timeouts.WriteTotalTimeoutMultiplier = 10;
+
+    // Aplicar los tiempos de espera al puerto serie
+    if (!SetCommTimeouts(hSerial, &timeouts)) {
+        fprintf(stderr, "Error al configurar los tiempos de espera del puerto serie\n");
+        return 1;
+    }
+    #endif
+
+    // Obtener las coordenadas del usuario
+    struct Coordenadas coordenadas = obtenerCoordenadas();
+    printf("Latitud: %.6f\n", coordenadas.latitud);
+    printf("Longitud: %.6f\n", coordenadas.longitud);
+    
+    // Bucle infinito para actualizar la orientación del panel solar
     while (1) {
-        printf("Ingrese la longitud del lugar (ejemplo: -79.20422): ");
-        scanf("%s", buffer);
+        // Muestra la fecha y hora actual
+        mostrarFechaActual();
+        mostrarHoraActual();
+        
+        // Muestra los días transcurridos del año
+        mostrarDiasTranscurridosDelAno();
+        
+        // Actualiza y muestra la orientación del panel solar
+        actualizarOrientacionPanel(coordenadas, hSerial);
 
-        // Verificar si la entrada es un número válido
-        if (esNumero(buffer)) {
-            sscanf(buffer, "%lf", &coordenadas.longitud);
-            break;  // Salir del bucle si es un número válido
-        } else {
-            printf("Error: Ingrese un valor numérico válido.\n");
-        }
+        // Espera 10 segundos antes de la siguiente actualización
+        #ifdef _WIN32
+        Sleep(10000);
+        #endif
     }
 
-    // Solicitar al usuario que ingrese la latitud del lugar
-    while (1) {
-        printf("Ingrese la latitud del lugar (ejemplo: -3.99313): ");
-        scanf("%s", buffer);
-
-        // Verificar si la entrada es un número válido
-        if (esNumero(buffer)) {
-            sscanf(buffer, "%lf", &coordenadas.latitud);
-            break;  // Salir del bucle si es un número válido
-        } else {
-            printf("Error: Ingrese un valor numérico válido.\n");
-        }
-    }
-
-    // Bucle para actualizar la orientación del panel solar continuamente
-    while (1) { 
-        actualizarOrientacionPanel(coordenadas);
-        // Esperar un minuto antes de la siguiente actualización (simulado con sleep)
-        Sleep(60000);
-    }
+    // Cierra el puerto serie (solo en Windows)
+    #ifdef _WIN32
+    CloseHandle(hSerial); // Cierra el puerto serie
+    #endif
 
     return 0;
 }
